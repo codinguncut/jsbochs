@@ -199,9 +199,11 @@ void bx_gui_c::init(int argc, char **argv, unsigned max_xres, unsigned max_yres,
   // CDROM,
   // the harddrive object is not initialised yet,
   // so we just set the bitmap to ejected for now
+  /*
   BX_GUI_THIS cdrom1_hbar_id = headerbar_bitmap(BX_GUI_THIS cdrom1_eject_bmap_id,
                           BX_GRAVITY_LEFT, cdrom1_handler);
   BX_GUI_THIS set_tooltip(BX_GUI_THIS cdrom1_hbar_id, "Change first CDROM media");
+  */
 
   // Mouse button
   if (SIM->get_param_bool(BXPN_MOUSE_ENABLED)->get())
@@ -269,6 +271,7 @@ void bx_gui_c::cleanup(void)
 
 void bx_gui_c::update_drive_status_buttons(void)
 {
+/*
   BX_GUI_THIS floppyA_status = SIM->get_param_bool(BXPN_FLOPPYA_STATUS)->get();
   BX_GUI_THIS floppyB_status = SIM->get_param_bool(BXPN_FLOPPYB_STATUS)->get();
   Bit32u handle = DEV_hd_get_first_cd_handle();
@@ -300,6 +303,7 @@ void bx_gui_c::update_drive_status_buttons(void)
   else {
     replace_bitmap(BX_GUI_THIS cdrom1_hbar_id, BX_GUI_THIS cdrom1_eject_bmap_id);
   }
+  */
 }
 
 void bx_gui_c::floppyA_handler(void)

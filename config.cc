@@ -254,9 +254,9 @@ void bx_plugin_ctrl_reset(bx_bool init_done)
   // add the default set of plugins to the list
   new bx_param_bool_c(base, "unmapped", "", "", 1);
   new bx_param_bool_c(base, "biosdev", "", "", 1);
-  new bx_param_bool_c(base, "speaker", "", "", 1);
+  //new bx_param_bool_c(base, "speaker", "", "", 1);
   new bx_param_bool_c(base, "extfpuirq", "", "", 1);
-  new bx_param_bool_c(base, "parallel", "", "", 1);
+  //new bx_param_bool_c(base, "parallel", "", "", 1);
   new bx_param_bool_c(base, "serial", "", "", 1);
 #if BX_SUPPORT_GAMEPORT
   new bx_param_bool_c(base, "gameport", "", "", 1);

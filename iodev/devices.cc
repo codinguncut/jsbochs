@@ -160,7 +160,7 @@ void bx_devices_c::init(BX_MEM_C *newmem)
   // "by hand" in this file.  Basically, we're using core plugins when we
   // want to control the init order.
   //
-  PLUG_load_plugin(hdimage, PLUGTYPE_CORE);
+  //PLUG_load_plugin(hdimage, PLUGTYPE_CORE);
 #if BX_NETWORKING
   network_enabled = is_network_enabled();
   if (network_enabled)
@@ -317,7 +317,7 @@ void bx_devices_c::exit()
   // unload optional and user plugins first
   bx_unload_plugins();
   bx_unload_core_plugins();
-  PLUG_unload_plugin(hdimage);
+  //PLUG_unload_plugin(hdimage);
 #if BX_NETWORKING
   if (network_enabled)
     PLUG_unload_plugin(netmod);
