@@ -1,0 +1,8 @@
+bg-tiny:
+  386 (no fpu), 4mb ram 
+
+floppyfw:
+  386sx (no fpu), 12mb ram (for less ram use 1.0 series)
+
+hal91:
+  386 (no fpu), 8mb ram
