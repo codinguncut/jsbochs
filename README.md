@@ -14,13 +14,15 @@ The speed is horrendously slow and I have almost no output options yet, but it i
 
 This git repo is currently my work bench and a bastadization of the original bochs code. I have removed all files that were not absolutely necessary for compilation in order to get my bearings.
 
-## TODO
-
-* Currently it runs under node in the console. Get main loop running for browser
-* Get an output running. Either a nicer terminal output or SDL output in the browser
-* Get it to compile with -O2. This would be a tremendous speedup, but currently there are compiler errors about bit arithmetic.
-
 ## Install
+
+### Requirements
+
+* [llvm](http://llvm.org/)
+* [emscripten](https://github.com/kripken/emscripten/wiki)
+* possibly [node](http://nodejs.org/)
+
+### Building
 
 <pre>
 emconfigure ./configure --disable-plugins --disable-x86-64 --enable-cpu-level=4 --with-term  --disable-large-ramfile --disable-cdrom --disable-debugger-gui --disable-readline --disable-iodebug --disable-show-ips --enable-logging --disable-idle-hack --disable-debugger --disable-disasm
@@ -31,6 +33,13 @@ emcc -O1 bochs.bc -o bochs.js
 
 node bochs.js
 </pre>
+
+## TODO
+
+* Currently it runs under node in the console. Get main loop running for browser
+* Get an output running. Either a nicer terminal output or SDL output in the browser
+* Get it to compile with -O2. This would be a tremendous speedup, but currently there are compiler errors about bit arithmetic.
+
 
 ## Issues
 
