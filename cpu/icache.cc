@@ -100,7 +100,16 @@ bxICacheEntry_c* BX_CPU_C::serveICacheMiss(bxICacheEntry_c *entry, Bit32u eipBia
       ret = fetchDecode64(fetchPtr, i, remainingInPage);
     else
 #endif
+    {
+/*
+      printf("fetchDecode32(%x, %d)\n", fetchPtr, remainingInPage);
+      for (int j = 0; j < remainingInPage/2; j++)
+      {
+        printf("%x", fetchPtr[j]);
+      }
+*/
       ret = fetchDecode32(fetchPtr, i, remainingInPage);
+    }
 
     if (ret < 0) {
       // Fetching instruction on segment/page boundary

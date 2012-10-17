@@ -511,23 +511,28 @@ BX_CPP_INLINE Bit64u bx_bswap64(Bit64u val64)
 // instructions to help perform these operations more efficiently than C++.
 
 #ifdef BX_LITTLE_ENDIAN
-
 #define WriteHostWordToLittleEndian(hostPtr,  nativeVar16) \
-    *((Bit16u*)(hostPtr)) = (nativeVar16)
+    memcpy((hostPtr), &(nativeVar16), sizeof(Bit16u))
+    //*((Bit16u*)(hostPtr)) = (nativeVar16)
 #define WriteHostDWordToLittleEndian(hostPtr, nativeVar32) \
-    *((Bit32u*)(hostPtr)) = (nativeVar32)
+    memcpy((hostPtr), &(nativeVar32), sizeof(Bit32u))
+    //*((Bit32u*)(hostPtr)) = (nativeVar32)
 #define WriteHostQWordToLittleEndian(hostPtr, nativeVar64) \
-    *((Bit64u*)(hostPtr)) = (nativeVar64)
+    memcpy((hostPtr), &(nativeVar64), sizeof(Bit64u))
+    //*((Bit64u*)(hostPtr)) = (nativeVar64)
 
 #define ReadHostWordFromLittleEndian(hostPtr,  nativeVar16) \
-    (nativeVar16) = *((Bit16u*)(hostPtr))
+    memcpy(&(nativeVar16), (hostPtr), sizeof(Bit16u))
+    //(nativeVar16) = *((Bit16u*)(hostPtr))
 #define ReadHostDWordFromLittleEndian(hostPtr, nativeVar32) \
-    (nativeVar32) = *((Bit32u*)(hostPtr))
+    memcpy(&(nativeVar32), (hostPtr), sizeof(Bit32u))
+    //(nativeVar32) = *((Bit32u*)(hostPtr))
 #define ReadHostQWordFromLittleEndian(hostPtr, nativeVar64) \
-    (nativeVar64) = *((Bit64u*)(hostPtr))
+    memcpy(&(nativeVar64), (hostPtr), sizeof(Bit64u))
+    //(nativeVar64) = *((Bit64u*)(hostPtr))
 
 #else
-
+/*
 #define WriteHostWordToLittleEndian(hostPtr,  nativeVar16) {  \
     *(Bit16u *)(hostPtr) = bx_bswap16((Bit16u)(nativeVar16)); \
 }
@@ -547,14 +552,17 @@ BX_CPP_INLINE Bit64u bx_bswap64(Bit64u val64)
 #define ReadHostQWordFromLittleEndian(hostPtr, nativeVar64) { \
     (nativeVar64) =  bx_bswap64(*(Bit64u *)(hostPtr));        \
 }
-
+*/
 #endif
 
 #define CopyHostWordLittleEndian(hostAddrDst,  hostAddrSrc)  \
-    (* (Bit16u *)(hostAddrDst)) = (* (Bit16u *)(hostAddrSrc));
+    memcpy(hostAddrDst, hostAddrSrc, sizeof(Bit16u));
+    //(* (Bit16u *)(hostAddrDst)) = (* (Bit16u *)(hostAddrSrc));
 #define CopyHostDWordLittleEndian(hostAddrDst,  hostAddrSrc) \
-    (* (Bit32u *)(hostAddrDst)) = (* (Bit32u *)(hostAddrSrc));
+    memcpy(hostAddrDst, hostAddrSrc, sizeof(Bit32u));
+    //(* (Bit32u *)(hostAddrDst)) = (* (Bit32u *)(hostAddrSrc));
 #define CopyHostQWordLittleEndian(hostAddrDst,  hostAddrSrc) \
-    (* (Bit64u *)(hostAddrDst)) = (* (Bit64u *)(hostAddrSrc));
+    memcpy(hostAddrDst, hostAddrSrc, sizeof(Bit64u));
+    //(* (Bit64u *)(hostAddrDst)) = (* (Bit64u *)(hostAddrSrc));
 
 #endif  /* BX_BOCHS_H */

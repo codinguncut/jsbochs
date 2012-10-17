@@ -29,9 +29,26 @@
 #if BX_WITH_TERM
 
 extern "C" {
-#include <curses.h>
+//#include <curses.h>
 #include <signal.h>
 };
+
+#undef BX_HAVE_COLOR_SET
+#undef BX_HAVE_MVHLINE
+#undef BX_HAVE_MVVLINE
+
+typedef unsigned long chtype;
+
+const int ERR = -1;
+int getch ()
+{
+  return ERR;
+}
+int mvaddch (int x, int y, const chtype ch)
+{
+  printf("%c", (char) ch);
+  return 0;
+}
 
 class bx_term_gui_c : public bx_gui_c {
 public:
@@ -57,6 +74,7 @@ IMPLEMENT_GUI_PLUGIN_CODE(term)
 bx_bool initialized = 0;
 static unsigned int text_rows = 25, text_cols = 80;
 
+#if 0
 static short curses_color[8] = {
   /* 0 */ COLOR_BLACK,
   /* 1 */ COLOR_BLUE,
@@ -67,6 +85,7 @@ static short curses_color[8] = {
   /* 6 */ COLOR_YELLOW,
   /* 7 */ COLOR_WHITE
 };
+#endif
 
 static chtype vga_to_term[128] = {
   0xc7, 0xfc, 0xe9, 0xe2, 0xe4, 0xe0, 0xe5, 0xe7,
@@ -182,9 +201,10 @@ void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   io->set_log_action(LOGLEV_PANIC, ACT_FATAL);
   // logfile should be different from stderr, otherwise terminal mode
   // really ends up having fun
-  if (!strcmp(SIM->get_param_string(BXPN_LOG_FILENAME)->getptr(), "-"))
-    BX_PANIC(("cannot log to stderr in term mode"));
+  //if (!strcmp(SIM->get_param_string(BXPN_LOG_FILENAME)->getptr(), "-"))
+  //  BX_PANIC(("cannot log to stderr in term mode"));
 
+  /*
   initscr();
   start_color();
   cbreak();
@@ -192,6 +212,7 @@ void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   keypad(stdscr,TRUE);
   nodelay(stdscr, TRUE);
   noecho();
+  */
 
 #if BX_HAVE_COLOR_SET
   if (has_colors()) {
@@ -211,6 +232,8 @@ void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 
 void do_char(int character, int alt)
 {
+  return;
+#if 0
   switch (character) {
     // control keys
     case   0x9: do_scan(BX_KEY_TAB,0,0,alt); break;
@@ -402,6 +425,7 @@ void do_char(int character, int alt)
       BX_INFO(("character unhandled: 0x%x",character));
       break;
   }
+#endif
 }
 
 // ::HANDLE_EVENTS()
@@ -426,7 +450,7 @@ void bx_term_gui_c::handle_events(void)
 
 void bx_term_gui_c::flush(void)
 {
-  if (initialized) refresh();
+  //if (initialized) refresh();
 }
 
 // ::CLEAR_SCREEN()
@@ -436,7 +460,7 @@ void bx_term_gui_c::flush(void)
 
 void bx_term_gui_c::clear_screen(void)
 {
-  clear();
+  //clear();
 #if BX_HAVE_COLOR_SET
   color_set(7, NULL);
 #endif
@@ -450,16 +474,19 @@ void bx_term_gui_c::clear_screen(void)
     mvvline(0, text_cols, ACS_VLINE, text_rows);
   }
 #endif
-  if ((LINES > (int)text_rows) && (COLS > (int)text_cols)) {
-    mvaddch(text_rows, text_cols, ACS_LRCORNER);
-  }
+  //if ((LINES > (int)text_rows) && (COLS > (int)text_cols)) {
+  //  mvaddch(text_rows, text_cols, ACS_LRCORNER);
+  //}
 }
 
 int get_color_pair(Bit8u vga_attr)
 {
+#if 0
   int term_attr = curses_color[vga_attr & 0x07];
   term_attr |= (curses_color[(vga_attr & 0x70) >> 4] << 3);
   return term_attr;
+#endif
+  return 0;
 }
 
 chtype get_term_char(Bit8u vga_char[])
@@ -470,6 +497,7 @@ chtype get_term_char(Bit8u vga_char[])
     return ' ';
   }
   switch (vga_char[0]) {
+#if 0
     case 0x04: term_char = ACS_DIAMOND; break;
     case 0x18: term_char = ACS_UARROW; break;
     case 0x19: term_char = ACS_DARROW; break;
@@ -519,6 +547,7 @@ chtype get_term_char(Bit8u vga_char[])
     case 0xb1: term_char = ACS_CKBOARD; break;
     case 0xb2: term_char = ACS_BOARD; break;
     case 0xdb: term_char = ACS_BLOCK; break;
+#endif
     default:
       if (vga_char[0] > 0x7f) {
         term_char = vga_to_term[vga_char[0]-0x80];
@@ -583,8 +612,8 @@ void bx_term_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
         }
 #endif
         ch = get_term_char(&new_text[0]);
-        if ((new_text[1] & 0x08) > 0) ch |= A_BOLD;
-        if ((new_text[1] & 0x80) > 0) ch |= A_BLINK;
+        //if ((new_text[1] & 0x08) > 0) ch |= A_BOLD;
+        //if ((new_text[1] & 0x80) > 0) ch |= A_BLINK;
         mvaddch(y, x, ch);
       }
       x++;
@@ -596,6 +625,7 @@ void bx_term_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
     old_text = old_line + tm_info->line_offset;
   } while (--rows);
 
+#if 0
   if ((cursor_x<text_cols) && (cursor_y<text_rows)
       && (tm_info->cs_start <= tm_info->cs_end)) {
     if(cursor_x>0)
@@ -611,13 +641,14 @@ void bx_term_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
     }
 #endif
     ch = get_term_char(&new_start[cursor_y*tm_info->line_offset+cursor_x*2]);
-    if ((cAttr & 0x08) > 0) ch |= A_BOLD;
-    if ((cAttr & 0x80) > 0) ch |= A_REVERSE;
+    //if ((cAttr & 0x08) > 0) ch |= A_BOLD;
+    //if ((cAttr & 0x80) > 0) ch |= A_REVERSE;
     mvaddch(cursor_y, cursor_x, ch);
-    curs_set(2);
+    //curs_set(2);
   } else {
-    curs_set(0);
+    //curs_set(0);
   }
+#endif
 }
 
 int bx_term_gui_c::get_clipboard_text(Bit8u **bytes, Bit32s *nbytes)
@@ -677,6 +708,7 @@ void bx_term_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 
 void bx_term_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
 {
+#if 0
   if (bpp > 8) {
     BX_PANIC(("%d bpp graphics mode not supported", bpp));
   }
@@ -700,10 +732,11 @@ void bx_term_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, u
       mvvline(0, text_cols, ACS_VLINE, text_rows);
     }
 #endif
-    if ((LINES > (int)text_rows) && (COLS > (int)text_cols)) {
-      mvaddch(text_rows, text_cols, ACS_LRCORNER);
-    }
+    //if ((LINES > (int)text_rows) && (COLS > (int)text_cols)) {
+    //  mvaddch(text_rows, text_cols, ACS_LRCORNER);
+    //}
   }
+#endif
 }
 
 // ::CREATE_BITMAP()
@@ -774,10 +807,12 @@ void bx_term_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 
 void bx_term_gui_c::exit(void)
 {
+#if 0
   if (!initialized) return;
   clear();
   flush();
   endwin();
+#endif
   BX_DEBUG(("exiting"));
 }
 

@@ -1,7 +1,10 @@
-megs: 64
-romimage: file=bios/BIOS-bochs-latest
-vgaromimage: file=bios/VGABIOS-lgpl-latest
+megs: 32
+romimage: file=BIOS-bochs-latest
+vgaromimage: file=VGABIOS-lgpl-latest
 vga: extension=vbe
-floppya: 1_44=linuxe/hal91.img, status=inserted
+floppya: 1_44=hal91.img, status=inserted
 boot: a
 mouse: enabled=0
+error: action=report
+info: action=report
+debug: action=report

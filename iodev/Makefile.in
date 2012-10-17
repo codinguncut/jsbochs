@@ -47,7 +47,7 @@ RANLIB = @RANLIB@
 PLUGIN_PATH=@libdir@
 top_builddir    = ..
 LIBTOOL=@LIBTOOL@
-WIN32_DLL_IMPORT_LIBRARY=../dllexports.a
+WIN32_DLL_IMPORT_LIBRARY=../dllexports.so
 
 BX_INCDIRS = -I.. -I$(srcdir)/.. -I../@INSTRUMENT_DIR@ -I$(srcdir)/../@INSTRUMENT_DIR@
 LOCAL_CXXFLAGS = $(MCH_CFLAGS)
@@ -64,7 +64,6 @@ OBJS_THAT_CAN_BE_PLUGINS = \
   pic.o \
   pit.o \
   serial.o \
-  parallel.o \
   floppy.o \
   keyboard.o \
   biosdev.o \
@@ -73,12 +72,13 @@ OBJS_THAT_CAN_BE_PLUGINS = \
   dma.o \
   unmapped.o \
   extfpuirq.o \
-  speaker.o \
-  busmouse.o \
   ioapic.o \
   @PCI_OBJ@ \
   @GAME_OBJS@ \
-  @IODEBUG_OBJS@
+  @IODEBUG_OBJS@ \
+  # speaker.o \
+  parallel.o \
+  busmouse.o \
 
 OBJS_THAT_SUPPORT_OTHER_PLUGINS = \
   pit82c54.o \
@@ -88,14 +88,14 @@ OBJS_THAT_SUPPORT_OTHER_PLUGINS = \
 NONPLUGIN_OBJS = @IODEV_NON_PLUGIN_OBJS@
 PLUGIN_OBJS = @IODEV_PLUGIN_OBJS@
 
-all: libiodev.a
+all: libiodev.so
 
 plugins: $(PLUGIN_OBJS:@PLUGIN_LIBNAME_TRANSFORMATION@)
 
-libiodev.a: $(NONPLUGIN_OBJS)
-	@RMCOMMAND@ libiodev.a
+libiodev.so: $(NONPLUGIN_OBJS)
+	@RMCOMMAND@ libiodev.so
 	@MAKELIB@ $(NONPLUGIN_OBJS)
-	@RANLIB@ libiodev.a
+	#@RANLIB@ libiodev.so
 
 # standard compile rule for C++ files
 .@CPP_SUFFIX@.o:
@@ -144,7 +144,7 @@ bx_serial.dll: serial.o serial_raw.o
 ##### end DLL section
 
 clean:
-	@RMCOMMAND@ -rf .libs *.lo *.o *.la *.a *.dll
+	@RMCOMMAND@ -rf .libs *.lo *.o *.la *.so *.dll
 
 dist-clean: clean
 	@RMCOMMAND@ Makefile

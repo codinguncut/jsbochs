@@ -1807,6 +1807,11 @@ modrm_done:
         break;
       case BxImmediate_Iw:
         if (remain > 1) {
+          Bit8u test;
+          memcpy(&test, iptr, sizeof(test));
+          //printf("FetchWord iptr' (%x): %x\n", iptr-1, *((Bit16u*)(iptr-1)));
+          //printf("FetchWord iptr (%x): %x\n", iptr, *((Bit16u*)iptr));
+          //printf("FetchWord iptr memcpy (%x): %x\n", iptr, test);
           i->modRMForm.Iw = FetchWORD(iptr);
           iptr += 2;
           remain -= 2;

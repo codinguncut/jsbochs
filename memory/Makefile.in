@@ -43,22 +43,22 @@ BX_OBJS = \
 
 BX_INCLUDES = ../bochs.h ../config.h
 
-all: libmemory.a
+all: libmemory.so
 
 .@CPP_SUFFIX@.o:
 	$(CXX) @DASH@c $(BX_INCDIRS) $(CXXFLAGS) @CXXFP@$< @OFP@$@
 
 
-libmemory.a: $(BX_OBJS)
-	@RMCOMMAND@ libmemory.a
+libmemory.so: $(BX_OBJS)
+	@RMCOMMAND@ libmemory.so
 	@MAKELIB@ $(BX_OBJS)
-	$(RANLIB) libmemory.a
+	#$(RANLIB) libmemory.so
 
 $(BX_OBJS): $(BX_INCLUDES)
 
 clean:
 	@RMCOMMAND@ *.o
-	@RMCOMMAND@ *.a
+	@RMCOMMAND@ *.so
 
 dist-clean: clean
 	@RMCOMMAND@ Makefile

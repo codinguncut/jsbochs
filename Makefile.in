@@ -148,10 +148,10 @@ EXTERN_ENVIRONMENT_OBJS = \
 	load32bitOShack.o \
 	pc_system.o
 
-DEBUGGER_LIB   = bx_debug/libdebug.a
-DISASM_LIB     = disasm/libdisasm.a
-INSTRUMENT_LIB = @INSTRUMENT_DIR@/libinstrument.a
-FPU_LIB        = cpu/fpu/libfpu.a
+DEBUGGER_LIB   = bx_debug/libdebug.so
+DISASM_LIB     = disasm/libdisasm.so
+INSTRUMENT_LIB = @INSTRUMENT_DIR@/libinstrument.so
+FPU_LIB        = cpu/fpu/libfpu.so
 READLINE_LIB   = @READLINE_LIB@
 EXTRA_LINK_OPTS = @EXTRA_LINK_OPTS@
 
@@ -168,18 +168,18 @@ BX_INCLUDES = bochs.h config.h osdep.h
 	$(CC) @DASH@c $(BX_INCDIRS) $(CFLAGS) $(FPU_FLAGS) $< @OFP@$@
 
 
-all: @PRIMARY_TARGET@ @PLUGIN_TARGET@ bximage@EXE@ bxcommit@EXE@ @BUILD_DOCBOOK_VAR@
+all: @PRIMARY_TARGET@
 
 @EXTERNAL_DEPENDENCY@
 
-bochs@EXE@: @IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @NETWORK_LIB_VAR@ @SOUND_LIB_VAR@ \
-		@DEBUGGER_VAR@ cpu/libcpu.a cpu/cpudb/libcpudb.a memory/libmemory.a \
-		gui/libgui.a @DISASM_VAR@ @INSTRUMENT_VAR@ $(BX_OBJS) \
+bochs@EXE@: @IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ \
+		@DEBUGGER_VAR@ cpu/libcpu.so memory/libmemory.so \
+		gui/libgui.so @DISASM_VAR@ @INSTRUMENT_VAR@ $(BX_OBJS) \
 		$(SIMX86_OBJS) @FPU_VAR@ @GDBSTUB_VAR@ @PLUGIN_VAR@
 	@LINK@ @EXPORT_DYNAMIC@ $(BX_OBJS) $(SIMX86_OBJS) \
-		@IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @NETWORK_LIB_VAR@ @SOUND_LIB_VAR@ \
-		@DEBUGGER_VAR@ cpu/libcpu.a cpu/cpudb/libcpudb.a \
-		 memory/libmemory.a gui/libgui.a \
+		@IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ \
+		@DEBUGGER_VAR@ cpu/libcpu.so \
+		 memory/libmemory.so gui/libgui.so \
 		@DISASM_VAR@ @INSTRUMENT_VAR@ @PLUGIN_VAR@ \
 		@GDBSTUB_VAR@ @FPU_VAR@ \
 		@NONPLUGIN_GUI_LINK_OPTS@ \
@@ -193,21 +193,21 @@ bochs@EXE@: @IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @N
 # libtool.  This creates a .DEF file, and exports file, an import library,
 # and then links bochs.exe with the exports file.
 .win32_dll_plugin_target: @IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @NETWORK_LIB_VAR@ \
-		@SOUND_LIB_VAR@ @DEBUGGER_VAR@ cpu/libcpu.a cpu/cpudb/libcpudb.a \
-		memory/libmemory.a gui/libgui.a @DISASM_VAR@ @INSTRUMENT_VAR@ \
+		@SOUND_LIB_VAR@ @DEBUGGER_VAR@ cpu/libcpu.so cpu/cpudb/libcpudb.so \
+		memory/libmemory.so gui/libgui.so @DISASM_VAR@ @INSTRUMENT_VAR@ \
 		$(BX_OBJS) $(SIMX86_OBJS) @FPU_VAR@ @GDBSTUB_VAR@ @PLUGIN_VAR@
 	$(DLLTOOL) --export-all-symbols --output-def bochs.def \
 		$(BX_OBJS) $(SIMX86_OBJS) \
 		@IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @NETWORK_LIB_VAR@ @SOUND_LIB_VAR@ \
-		cpu/libcpu.a cpu/cpudb/libcpudb.a memory/libmemory.a gui/libgui.a \
+		cpu/libcpu.so cpu/cpudb/libcpudb.so memory/libmemory.so gui/libgui.so \
 		@DEBUGGER_VAR@ @DISASM_VAR@ @INSTRUMENT_VAR@ @PLUGIN_VAR@ \
 		@GDBSTUB_VAR@ @FPU_VAR@
-	$(DLLTOOL) --dllname bochs.exe --def bochs.def --output-lib dllexports.a
+	$(DLLTOOL) --dllname bochs.exe --def bochs.def --output-lib dllexports.so
 	$(DLLTOOL) --dllname bochs.exe --output-exp bochs.exp --def bochs.def
 	$(CXX) -o bochs.exe $(CXXFLAGS) $(LDFLAGS) -export-dynamic \
 	    $(BX_OBJS) bochs.exp $(SIMX86_OBJS) \
 		@IODEV_LIB_VAR@ @DISPLAY_LIB_VAR@ @HDIMAGE_LIB_VAR@ @USB_LIB_VAR@ @NETWORK_LIB_VAR@ @SOUND_LIB_VAR@ \
-		cpu/libcpu.a cpu/cpudb/libcpudb.a memory/libmemory.a gui/libgui.a \
+		cpu/libcpu.so cpu/cpudb/libcpudb.so memory/libmemory.so gui/libgui.so \
 		@DEBUGGER_VAR@ @DISASM_VAR@ @INSTRUMENT_VAR@ @PLUGIN_VAR@ \
 		@GDBSTUB_VAR@ @FPU_VAR@ \
 		$(GUI_LINK_OPTS) \
@@ -263,80 +263,80 @@ misc/niclist.o: $(srcdir)/misc/niclist.c
 $(BX_OBJS): $(BX_INCLUDES)
 
 # cannot use -C option to be compatible with Microsoft nmake
-iodev/libiodev.a::
+iodev/libiodev.so::
 	cd iodev @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libiodev.a
+	$(MAKE) $(MDEFINES) libiodev.so
 	@CD_UP_ONE@
 
-iodev/display/libdisplay.a::
+iodev/display/libdisplay.so::
 	cd iodev/display @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libdisplay.a
+	$(MAKE) $(MDEFINES) libdisplay.so
 	@CD_UP_TWO@
 
-iodev/hdimage/libhdimage.a::
+iodev/hdimage/libhdimage.so::
 	cd iodev/hdimage @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libhdimage.a
+	$(MAKE) $(MDEFINES) libhdimage.so
 	@CD_UP_TWO@
 
-iodev/usb/libusb.a::
+iodev/usb/libusb.so:
 	cd iodev/usb @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libusb.a
+	$(MAKE) $(MDEFINES) libusb.so
 	@CD_UP_TWO@
 
-iodev/network/libnetwork.a::
+iodev/network/libnetwork.so::
 	cd iodev/network @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libnetwork.a
+	$(MAKE) $(MDEFINES) libnetwork.so
 	@CD_UP_TWO@
 
-iodev/sound/libsound.a::
+iodev/sound/libsound.so::
 	cd iodev/sound @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libsound.a
+	$(MAKE) $(MDEFINES) libsound.so
 	@CD_UP_TWO@
 
-bx_debug/libdebug.a::
+bx_debug/libdebug.so::
 	cd bx_debug @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libdebug.a
+	$(MAKE) $(MDEFINES) libdebug.so
 	@CD_UP_ONE@
 
-cpu/libcpu.a::
+cpu/libcpu.so::
 	cd cpu @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libcpu.a
+	$(MAKE) $(MDEFINES) libcpu.so
 	@CD_UP_ONE@
 
-cpu/cpudb/libcpudb.a::
+cpu/cpudb/libcpudb.so::
 	cd cpu/cpudb @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libcpudb.a
+	$(MAKE) $(MDEFINES) libcpudb.so
 	@CD_UP_TWO@
 
-cpu/fpu/libfpu.a::
+cpu/fpu/libfpu.so::
 	cd cpu/fpu @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libfpu.a
+	$(MAKE) $(MDEFINES) libfpu.so
 	@CD_UP_TWO@
 
-memory/libmemory.a::
+memory/libmemory.so::
 	cd memory @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libmemory.a
+	$(MAKE) $(MDEFINES) libmemory.so
 	@CD_UP_ONE@
 
-gui/libgui.a::
+gui/libgui.so::
 	cd gui @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libgui.a
+	$(MAKE) $(MDEFINES) libgui.so
 	@CD_UP_ONE@
 
-disasm/libdisasm.a::
+disasm/libdisasm.so::
 	cd disasm @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libdisasm.a
+	$(MAKE) $(MDEFINES) libdisasm.so
 	@CD_UP_ONE@
 
-@INSTRUMENT_DIR@/libinstrument.a::
+@INSTRUMENT_DIR@/libinstrument.so::
 	cd @INSTRUMENT_DIR@ @COMMAND_SEPARATOR@
-	$(MAKE) $(MDEFINES) libinstrument.a
+	$(MAKE) $(MDEFINES) libinstrument.so
 	@CD_UP_TWO@
 
-libbochs.a:
-	-rm -f libbochs.a
-	ar rv libbochs.a $(EXTERN_ENVIRONMENT_OBJS)
-	$(RANLIB) libbochs.a
+libbochs.so:
+	-rm -f libbochs.so
+	ar rv libbochs.so $(EXTERN_ENVIRONMENT_OBJS)
+	$(RANLIB) libbochs.so
 
 # for wxWidgets port, on win32 platform
 wxbochs_resources.o: wxbochs.rc
@@ -498,7 +498,7 @@ zip:
 
 clean:
 	@RMCOMMAND@ *.o
-	@RMCOMMAND@ *.a
+	@RMCOMMAND@ *.so
 	@RMCOMMAND@ bochs
 	@RMCOMMAND@ bochs.exe
 	@RMCOMMAND@ bximage

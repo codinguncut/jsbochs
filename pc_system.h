@@ -98,11 +98,14 @@ public:
     return triggeredTimer;
   }
   static BX_CPP_INLINE void tick1(void) {
-    if (--bx_pc_system.currCountdown == 0) {
+    //printf("tick1 (%u)", bx_pc_system.currCountdown);
+    if (--bx_pc_system.currCountdown <= 0) {
+      bx_pc_system.currCountdown = 0;
       bx_pc_system.countdownEvent();
     }
   }
   static BX_CPP_INLINE void tickn(Bit32u n) {
+    //printf("tickn %u (%u)", n, bx_pc_system.currCountdown);
     while (n >= bx_pc_system.currCountdown) {
       n -= bx_pc_system.currCountdown;
       bx_pc_system.currCountdown = 0;

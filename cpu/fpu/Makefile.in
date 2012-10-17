@@ -38,7 +38,7 @@ LDFLAGS    = @LDFLAGS@
 LIBS       = @LIBS@
 RANLIB     = @RANLIB@
 
-L_TARGET = libfpu.a
+L_TARGET = libfpu.so
 
 
 BX_INCDIRS = -I.. -I../.. -I$(srcdir)/.. -I$(srcdir)/../.. -I../../@INSTRUMENT_DIR@ -I$(srcdir)/../../@INSTRUMENT_DIR@
@@ -49,7 +49,7 @@ OBJS = ferr.o fpu.o fpu_arith.o fpu_compare.o fpu_const.o fpu_cmov.o \
                softfloat.o softfloatx80.o softfloat16.o softfloat-muladd.o \
                softfloat-specialize.o softfloat-round-pack.o poly.o
 
-all: libfpu.a
+all: libfpu.so
 
 .@CPP_SUFFIX@.o:
 	$(CXX) @DASH@c $(BX_INCDIRS) $(CXXFLAGS) @CXXFP@$< @OFP@$@
@@ -58,14 +58,14 @@ all: libfpu.a
 	$(CC) @DASH@c $(CFLAGS) $(BX_INCDIRS) $< @OFP@$@
 
 
-libfpu.a: $(OBJS)
-	@RMCOMMAND@ libfpu.a
+libfpu.so: $(OBJS)
+	@RMCOMMAND@ libfpu.so
 	@MAKELIB@ $(OBJS)
-	$(RANLIB) libfpu.a
+	#$(RANLIB) libfpu.so
 
 clean:
 	@RMCOMMAND@ *.o
-	@RMCOMMAND@ *.a
+	@RMCOMMAND@ *.so
 
 dist-clean: clean
 	@RMCOMMAND@ Makefile

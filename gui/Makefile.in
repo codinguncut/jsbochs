@@ -90,14 +90,14 @@ PLUGIN_OBJS = @GUI_PLUGIN_OBJS@
 # -------- end configurable options --------------------------
 #
 
-all: libgui.a
+all: libgui.so
 
 plugins: $(PLUGIN_OBJS:@PLUGIN_LIBNAME_TRANSFORMATION@)
 
-libgui.a: $(NONPLUGIN_OBJS)
-	@RMCOMMAND@ libgui.a
+libgui.so: $(NONPLUGIN_OBJS)
+	@RMCOMMAND@ libgui.so
 	@MAKELIB@ $(NONPLUGIN_OBJS)
-	@RANLIB@ libgui.a
+	#@RANLIB@ libgui.a
 
 # standard compile rule for C++ files
 .@CPP_SUFFIX@.o:

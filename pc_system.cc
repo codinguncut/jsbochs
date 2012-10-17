@@ -77,7 +77,9 @@ void bx_pc_system_c::initialize(Bit32u ips)
   kill_bochs_request = 0;
 
   // parameter 'ips' is the processor speed in Instructions-Per-Second
-  m_ips = double(ips) / 1000000.0L;
+  m_ips = ((double)ips) / 1000000.0;
+  BX_DEBUG(("system - initialize, ips %lu, m_ips %f", ips, m_ips));
+  BX_DEBUG(("currCountdown: %u", currCountdown));
 
   BX_DEBUG(("ips = %u", (unsigned) ips));
 }
@@ -259,7 +261,8 @@ int bx_pc_system_c::register_timer(void *this_ptr, void (*funct)(void *),
   Bit32u useconds, bx_bool continuous, bx_bool active, const char *id)
 {
   // Convert useconds to number of ticks.
-  Bit64u ticks = (Bit64u) (double(useconds) * m_ips);
+  Bit64u ticks = (Bit64u) (((double)useconds) * m_ips);
+  BX_DEBUG(("register_timer - useconds %lu, ticks %llu, m_ips %f", useconds, ticks, m_ips));
 
   return register_timer_ticks(this_ptr, funct, ticks, continuous, active, id);
 }
@@ -268,6 +271,8 @@ int bx_pc_system_c::register_timer_ticks(void* this_ptr, bx_timer_handler_t func
     Bit64u ticks, bx_bool continuous, bx_bool active, const char *id)
 {
   unsigned i;
+  
+  BX_DEBUG(("register_timer_ticks - ticks %llu, ", ticks));
 
   // If the timer frequency is rediculously low, make it more sane.
   // This happens when 'ips' is too low.
@@ -311,9 +316,11 @@ int bx_pc_system_c::register_timer_ticks(void* this_ptr, bx_timer_handler_t func
       // by the delta.
       currCountdownPeriod -= (currCountdown - Bit32u(ticks));
       currCountdown = Bit32u(ticks);
+       BX_DEBUG(("adjusting countdown (%u)", currCountdown));
     }
   }
 
+  BX_DEBUG(("active %d, ticks %u, currCountdown %llu", active, ticks, Bit64u(currCountdown)));
   BX_DEBUG(("timer id %d registered for '%s'", i, id));
   // If we didn't find a free slot, increment the bound, numTimers.
   if (i==numTimers)
@@ -329,6 +336,7 @@ void bx_pc_system_c::countdownEvent(void)
   Bit64u   minTimeToFire;
   bx_bool  triggered[BX_MAX_TIMERS];
 
+
   // The countdown decremented to 0.  We need to service all the active
   // timers, and invoke callbacks from those timers which have fired.
 #if BX_TIMER_DEBUG
@@ -340,6 +348,8 @@ void bx_pc_system_c::countdownEvent(void)
   // elapsed since the last update.
   ticksTotal += Bit64u(currCountdownPeriod);
   minTimeToFire = (Bit64u) -1;
+  
+  BX_DEBUG(("countdownEvent (%llu)", ticksTotal));
 
   for (i=0; i < numTimers; i++) {
     triggered[i] = 0; // Reset triggered flag.
@@ -383,6 +393,7 @@ void bx_pc_system_c::countdownEvent(void)
     // timer period or deactivate etc.
     if (triggered[i]) {
       triggeredTimer = i;
+      BX_DEBUG(("timer %d triggered (%s)", i, timer[i].id));
       timer[i].funct(timer[i].this_ptr);
       triggeredTimer = 0;
     }
@@ -403,6 +414,7 @@ void bx_pc_system_c::nullTimer(void* this_ptr)
 
   UNUSED(this_ptr);
 
+  BX_DEBUG(("nullTimer"));
 #if SpewPeriodicTimerInfo
   BX_INFO(("==================================="));
   for (unsigned i=0; i < bx_pc_system.numTimers; i++) {
@@ -513,7 +525,7 @@ void bx_pc_system_c::activate_timer(unsigned i, Bit32u useconds, bx_bool continu
   }
   else {
     // convert useconds to number of ticks
-    ticks = (Bit64u) (double(useconds) * m_ips);
+    ticks = (Bit64u) (((double)useconds) * m_ips);
 
     // If the timer frequency is rediculously low, make it more sane.
     // This happens when 'ips' is too low.

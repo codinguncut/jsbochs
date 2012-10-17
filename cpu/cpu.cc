@@ -86,12 +86,15 @@ void BX_CPU_C::cpu_loop(void)
     // check on events which occurred for previous instructions (traps)
     // and ones which are asynchronous to the CPU (hardware interrupts)
     if (BX_CPU_THIS_PTR async_event) {
+      BX_DEBUG(("cpu - handleAsyncEvent"));
       if (handleAsyncEvent()) {
         // If request to return to caller ASAP.
         return;
       }
     }
 
+    //printf("cpu - getICacheEntry\n");
+    //printf("RIP before getICacheEntry: %x\n", RIP);
     bxICacheEntry_c *entry = getICacheEntry();
     bxInstruction_c *i = entry->i;
 
@@ -233,6 +236,7 @@ bxICacheEntry_c* BX_CPU_C::getICacheEntry(void)
     entry = serveICacheMiss(entry, (Bit32u) eipBiased, pAddr);
   }
 
+  //printf("entry - pAddr %0x, ia_opcode: %0x, opcode name: %s, Id %0lx, Iw %0x, Ib %0x\n", entry->pAddr, entry->i->getIaOpcode(), entry->i->getIaOpcodeName(), entry->i->modRMForm.Id, entry->i->modRMForm.Iw, entry->i->modRMForm.Ib);
   return entry;
 }
 

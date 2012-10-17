@@ -47,7 +47,7 @@ RANLIB = @RANLIB@
 PLUGIN_PATH=@libdir@
 top_builddir    = ../..
 LIBTOOL=@LIBTOOL@
-WIN32_DLL_IMPORT_LIBRARY=../../dllexports.a
+WIN32_DLL_IMPORT_LIBRARY=../../dllexports.so
 
 DISPLAY_OBJS = @DISPLAY_OBJS@
 
@@ -64,14 +64,14 @@ OBJS_THAT_SUPPORT_OTHER_PLUGINS = \
 NONPLUGIN_OBJS = @IODEV_EXT_NON_PLUGIN_OBJS@
 PLUGIN_OBJS = @IODEV_EXT_PLUGIN_OBJS@
 
-all: libdisplay.a
+all: libdisplay.so
 
 plugins: $(PLUGIN_OBJS:@PLUGIN_LIBNAME_TRANSFORMATION@)
 
-libdisplay.a: $(NONPLUGIN_OBJS)
-	@RMCOMMAND@ libdisplay.a
+libdisplay.so: $(NONPLUGIN_OBJS)
+	@RMCOMMAND@ libdisplay.so
 	@MAKELIB@ $(NONPLUGIN_OBJS)
-	@RANLIB@ libdisplay.a
+	#@RANLIB@ libdisplay.so
 
 # standard compile rule for C++ files
 .@CPP_SUFFIX@.o:
@@ -105,7 +105,7 @@ bx_svga_cirrus.dll: svga_cirrus.o vgacore.o
 ##### end DLL section
 
 clean:
-	@RMCOMMAND@ -rf .libs *.lo *.o *.la *.a *.dll
+	@RMCOMMAND@ -rf .libs *.lo *.o *.la *.so *.dll
 
 dist-clean: clean
 	@RMCOMMAND@ Makefile

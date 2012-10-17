@@ -40,6 +40,7 @@ BX_CPP_INLINE Bit16u FetchWORD(const Bit8u *iptr)
 {
    Bit16u data;
    ReadHostWordFromLittleEndian(iptr, data);
+   //printf("FetchWORD %x\n", data);
    return data;
 }
 
@@ -47,6 +48,7 @@ BX_CPP_INLINE Bit32u FetchDWORD(const Bit8u *iptr)
 {
    Bit32u data;
    ReadHostDWordFromLittleEndian(iptr, data);
+   //printf("FetchDWORD %x\n", data);
    return data;
 }
 

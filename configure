@@ -4988,9 +4988,9 @@ linux*)
 
 netbsd*)
   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
-    lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so\.[0-9]+\.[0-9]+|_pic\.a)$'
+    lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so\.[0-9]+\.[0-9]+|_pic\.so)$'
   else
-    lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so|_pic\.a)$'
+    lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so|_pic\.so)$'
   fi
   ;;
 
@@ -7778,7 +7778,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
       hardcode_minus_L=yes
       allow_undefined_flag=unsupported
       archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
-      old_archive_From_new_cmds='emximp -o $output_objdir/$libname.a $output_objdir/$libname.def'
+      old_archive_From_new_cmds='emximp -o $output_objdir/$libname.so $output_objdir/$libname.def'
       ;;
 
     osf3*)
@@ -8045,7 +8045,7 @@ need_version=unknown
 case $host_os in
 aix3*)
   version_type=linux
-  library_names_spec='${libname}${release}${shared_ext}$versuffix $libname.a'
+  library_names_spec='${libname}${release}${shared_ext}$versuffix $libname.so'
   shlibpath_var=LIBPATH
 
   # AIX 3 has no versioning support, so we append a major version to the name.
@@ -8089,7 +8089,7 @@ aix4* | aix5*)
     else
       # We preserve .a as extension for shared libraries through AIX4.2
       # and later when we are not doing run time linking.
-      library_names_spec='${libname}${release}.a $libname.a'
+      library_names_spec='${libname}${release}.so $libname.so'
       soname_spec='${libname}${release}${shared_ext}$major'
     fi
     shlibpath_var=LIBPATH
@@ -8097,7 +8097,7 @@ aix4* | aix5*)
   ;;
 
 amigaos*)
-  library_names_spec='$libname.ixlibrary $libname.a'
+  library_names_spec='$libname.ixlibrary $libname.so'
   # Create ${libname}_ixlibrary.a entries in /sys/libs.
   finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | $Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a"; cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a || exit 1; done'
   ;;
@@ -23929,12 +23929,12 @@ PRIMARY_TARGET='bochs'
 PLUGIN_LIBNAME_TRANSFORMATION='%.o=libbx_%.la'
 
 if test "$bx_plugins" = 0; then
-  HDIMAGE_LIB_VAR='iodev/hdimage/libhdimage.a'
+  HDIMAGE_LIB_VAR='iodev/hdimage/libhdimage.so'
 
-  DISPLAY_LIB_VAR='iodev/display/libdisplay.a'
+  DISPLAY_LIB_VAR='iodev/display/libdisplay.so'
 
 fi
-IODEV_LIB_VAR='iodev/libiodev.a'
+IODEV_LIB_VAR='iodev/libiodev.so'
 NONINLINE_VAR='$(NONINLINE_OBJS)'
 
 
@@ -24034,7 +24034,8 @@ SLASH="/"
 CXXFP=""
 CFP=""
 OFP="-o "
-MAKELIB="ar rv \$@"
+MAKELIB="\$(CXX) -shared -o \$@"
+#"ar rv \$@"
 RMCOMMAND="rm -f "
 # first define link variables without libtool
 LINK="\$(CXX) -o \$@ \$(CXXFLAGS) \$(LDFLAGS)"
@@ -25476,7 +25477,8 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile iodev/Makefile iodev/display/Makefile iodev/hdimage/Makefile iodev/usb/Makefile iodev/network/Makefile iodev/sound/Makefile bx_debug/Makefile bios/Makefile cpu/Makefile cpu/cpudb/Makefile cpu/fpu/Makefile memory/Makefile gui/Makefile disasm/Makefile ${INSTRUMENT_DIR}/Makefile misc/Makefile doc/docbook/Makefile build/linux/bochs-dlx bxversion.h bxversion.rc build/macosx/Info.plist build/win32/nsis/Makefile build/win32/nsis/bochs.nsi host/linux/pcidev/Makefile"
+#ac_config_files="$ac_config_files Makefile iodev/Makefile iodev/display/Makefile iodev/hdimage/Makefile iodev/usb/Makefile iodev/network/Makefile iodev/sound/Makefile bx_debug/Makefile bios/Makefile cpu/Makefile cpu/cpudb/Makefile cpu/fpu/Makefile memory/Makefile gui/Makefile disasm/Makefile ${INSTRUMENT_DIR}/Makefile misc/Makefile doc/docbook/Makefile build/linux/bochs-dlx bxversion.h bxversion.rc build/macosx/Info.plist build/win32/nsis/Makefile build/win32/nsis/bochs.nsi host/linux/pcidev/Makefile"
+ac_config_files="$ac_config_files Makefile iodev/Makefile iodev/display/Makefile cpu/Makefile cpu/fpu/Makefile memory/Makefile gui/Makefile bxversion.h bxversion.rc bx_debug/Makefile disasm/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
