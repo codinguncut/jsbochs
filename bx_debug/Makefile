@@ -30,7 +30,7 @@ SHELL = /bin/bash
 CC = /home/jonas/workspace/emscripten/emcc
 CFLAGS =  
 CXX = /home/jonas/workspace/emscripten/em++
-CXXFLAGS = -g -O2 
+CXXFLAGS =  -O2 
 
 LDFLAGS = 
 LIBS =  -lm

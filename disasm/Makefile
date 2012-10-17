@@ -27,7 +27,7 @@ SHELL = /bin/bash
 
 
 CXX = /home/jonas/workspace/emscripten/em++
-CXXFLAGS = -g -O2 
+CXXFLAGS =  -O2 
 
 LDFLAGS = 
 LIBS =  -lm

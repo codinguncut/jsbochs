@@ -72,9 +72,9 @@ Bit8u* BX_MEM_C::alloc_vector_aligned(Bit32u bytes, Bit32u alignment)
   }
   // round address forward to nearest multiple of alignment.  Alignment
   // MUST BE a power of two for this to work.
-  Bit64u masked = ((Bit64u)(BX_MEM_THIS actual_vector + test_mask)) & ~test_mask;
+  Bit64u masked = ((Bit64u)(((long)(BX_MEM_THIS actual_vector)) + test_mask)) & ~test_mask;
   Bit8u *vector = (Bit8u *) masked;
-  printf("bytes %u, alignment %u, test_mask %llu, actual vector %p, masked %llu\n", bytes, alignment, test_mask, BX_MEM_THIS actual_vector, masked);
+  BX_DEBUG(("alloc bytes %x, alignment %x, test_mask %llx, actual vector %p, masked %llx, vector %p", bytes, alignment, test_mask, BX_MEM_THIS actual_vector, masked, vector));
   // sanity check: no lost bits during pointer conversion
   assert(sizeof(masked) >= sizeof(vector));
   // sanity check: after realignment, everything fits in allocated space
@@ -110,10 +110,10 @@ void BX_MEM_C::init_memory(Bit64u guest, Bit64u host)
     BX_MEM_THIS blocks = NULL;
   }
   BX_MEM_THIS vector = alloc_vector_aligned(host + BIOSROMSZ + EXROMSIZE + 4096, BX_MEM_VECTOR_ALIGN);
-  printf("allocated memory - host %llu, BIOSROMSZ %u, EXROMSIZE %d, alignment %d\n",
-        host, BIOSROMSZ, EXROMSIZE, BX_MEM_VECTOR_ALIGN);
-  printf("allocated memory at %p. after alignment, vector=%p\n",
-        BX_MEM_THIS actual_vector, BX_MEM_THIS vector);
+  BX_DEBUG(("allocated memory - host %llx, BIOSROMSZ %x, EXROMSIZE %x, alignment %x",
+        host, BIOSROMSZ, EXROMSIZE, BX_MEM_VECTOR_ALIGN));
+  BX_DEBUG(("allocated memory at %p. after alignment, vector=%p",
+        BX_MEM_THIS actual_vector, BX_MEM_THIS vector));
 
   BX_MEM_THIS len = guest;
   BX_MEM_THIS allocated = host;
@@ -438,7 +438,7 @@ void BX_MEM_C::load_ROM(const char *path, bx_phy_address romaddress, Bit8u type)
       BX_MEM_THIS rom_present[64] = 1;
     }
     is_bochs_bios = (strstr(path, "BIOS-bochs-latest") != NULL);
-    printf("system bios, path %s, size %lu, romaddress %lu, offset %lu, BIOS_MASK %lu\n", path, size, romaddress, offset, BIOS_MASK);
+    BX_DEBUG(("system bios, path %s, size %lx, romaddress %lx, offset %lx, BIOS_MASK %lx", path, size, romaddress, offset, BIOS_MASK));
   } else {
     if ((size % 512) != 0) {
       close(fd);

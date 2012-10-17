@@ -262,7 +262,7 @@ int bxmain(void)
 #endif
   bx_user_quit = 0;
   bx_init_siminterface();   // create the SIM object
-  printf("after bx_init_siminterface\n");
+  //printf("after bx_init_siminterface\n");
   //static jmp_buf context;
   //if (setjmp (context) == 0) {
   if (1) {
@@ -272,7 +272,7 @@ int bxmain(void)
       BX_INSTR_EXIT_ENV();
       return 0;
     }
-    printf("after bx_init_main\n");
+   // printf("after bx_init_main\n");
     // read a param to decide which config interface to start.
     // If one exists, start it.  If not, just begin.
     bx_param_enum_c *ci_param = SIM->get_param_enum(BXPN_SEL_CONFIG_INTERFACE);
@@ -280,7 +280,7 @@ int bxmain(void)
     if (!strcmp(ci_name, "textconfig")) {
 #if BX_USE_TEXTCONFIG
       init_text_config_interface();   // in textconfig.h
-      printf("after init_text_config");
+     // printf("after init_text_config");
 #else
       BX_PANIC(("configuration interface 'textconfig' not present"));
 #endif
@@ -303,10 +303,10 @@ int bxmain(void)
     ci_param->set_enabled(0);
     int status = SIM->configuration_interface(ci_name, CI_START);
 #if 0
-EMSCRIPTEN
+//EMSCRIPTEN
     return(0);
 #endif
-    printf("after configuration_interface\n");
+   // printf("after configuration_interface\n");
     if (status == CI_ERR_NO_TEXT_CONSOLE)
       BX_PANIC(("Bochs needed the text console, but it was not usable"));
     // user quit the config interface, so just quit
@@ -325,7 +325,7 @@ EMSCRIPTEN
   }
 #endif
   BX_INSTR_EXIT_ENV();
-  printf("after bxmain\n");
+ // printf("after bxmain\n");
   return SIM->get_exit_code();
 }
 
@@ -958,17 +958,17 @@ bx_bool load_and_init_display_lib(void)
   return true;
 }
 
-#if 1
+#if 0
 //EMSCRIPTEN
 void theLoop() {
-  printf("theLoop\n");
+ // printf("theLoop\n");
   BX_CPU(0)->cpu_loop();
 }
 #endif
 
 int bx_begin_simulation (int argc, char *argv[])
 {
-  printf("bx_begin_simulation\n");
+ // printf("bx_begin_simulation\n");
   if (SIM->get_param_bool(BXPN_RESTORE_FLAG)->get()) {
     if (!SIM->restore_config()) {
       BX_PANIC(("cannot restore configuration"));
@@ -1007,19 +1007,19 @@ int bx_begin_simulation (int argc, char *argv[])
   BX_ASSERT(bx_cpu_count > 0);
 
   bx_init_hardware();
-  printf("after bx_init_hardware()\n");
+ // printf("after bx_init_hardware()\n");
 
   if (SIM->get_param_enum(BXPN_LOAD32BITOS_WHICH)->get()) {
     void bx_load32bitOSimagehack(void);
     bx_load32bitOSimagehack();
-    printf("after load32bitOSimagehack\n");
+   // printf("after load32bitOSimagehack\n");
   }
 
   SIM->set_init_done(1);
 
   // update headerbar buttons since drive status can change during init
   bx_gui->update_drive_status_buttons();
-  printf("after update_drive_status_buttons\n");
+ // printf("after update_drive_status_buttons\n");
 
   // iniialize statusbar and set all items inactive
   if (!SIM->get_param_bool(BXPN_RESTORE_FLAG)->get())
@@ -1048,10 +1048,10 @@ int bx_begin_simulation (int argc, char *argv[])
     if (BX_SMP_PROCESSORS == 1) {
       // only one processor, run as fast as possible by not messing with
       // quantums and loops.
-      printf("before the main loop\n");
+     // printf("before the main loop\n");
 #if 0
 //EMSCRIPTEN
-      emscripten_set_main_loop(theLoop, 1000);
+      emscripten_set_main_loop(theLoop, 1000, false);
       return(0);
 #else
       while (1) {
@@ -1100,7 +1100,7 @@ int bx_begin_simulation (int argc, char *argv[])
   }
 #endif /* BX_DEBUGGER == 0 */
 #if 0
-EMSCRIPTEN
+//EMSCRIPTEN
 #else
   BX_INFO(("cpu loop quit, shutting down simulator"));
   bx_atexit();

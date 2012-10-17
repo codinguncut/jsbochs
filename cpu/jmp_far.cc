@@ -44,6 +44,7 @@ BX_CPU_C::jump_protected(bxInstruction_c *i, Bit16u cs_raw, bx_address disp)
   /* destination selector index is within its descriptor table
      limits else #GP(selector) */
   fetch_raw_descriptor(&selector, &dword1, &dword2, BX_GP_EXCEPTION);
+   //BX_DEBUG(("JONAS jump prot cs_raw %x, selector.value %x, selector.index %x, dword1 %lx, dword2 %lx", cs_raw, selector.value, selector.index, dword1, dword2));
 
   /* examine AR byte of destination selector for legal values: */
   parse_descriptor(dword1, dword2, &descriptor);
@@ -82,7 +83,8 @@ BX_CPU_C::jump_protected(bxInstruction_c *i, Bit16u cs_raw, bx_address disp)
       return;
     }
 #endif
-
+    
+    //BX_DEBUG(("JONAS jump descriptor.type %x", descriptor.type));
     switch (descriptor.type) {
       case BX_SYS_SEGMENT_AVAIL_286_TSS:
       case BX_SYS_SEGMENT_AVAIL_386_TSS:

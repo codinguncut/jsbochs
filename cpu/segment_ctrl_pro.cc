@@ -569,6 +569,8 @@ void BX_CPU_C::fetch_raw_descriptor(const bx_selector_t *selector,
 
   *dword1 = GET32L(raw_descriptor);
   *dword2 = GET32H(raw_descriptor);
+
+  //BX_DEBUG(("fetch_raw index %x, exception_no %d, selector->ti %x, offset %x, raw_descriptor %llx, gdtr.base %p", index, exception_no, selector->ti, offset, raw_descriptor, BX_CPU_THIS_PTR gdtr.base));
 }
 
   bx_bool BX_CPP_AttrRegparmN(3)

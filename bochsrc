@@ -6,5 +6,5 @@ floppya: 1_44=hal91.img, status=inserted
 boot: a
 mouse: enabled=0
 error: action=report
-info: action=report
-debug: action=report
+info: action=ignore
+debug: action=ignore

@@ -342,12 +342,14 @@ BX_CPU_C::system_read_qword(bx_address laddr)
   unsigned tlbIndex = BX_TLB_INDEX_OF(laddr, 7);
   bx_address lpf = LPFOf(laddr);
   bx_TLB_entry *tlbEntry = &BX_CPU_THIS_PTR TLB.entry[tlbIndex];
+     //BX_DEBUG(("system_read_qword - laddr %x, tlbIndex %d, lpf %x, tlbEntry->lpf %x", laddr, tlbIndex, lpf, tlbEntry->lpf));
   if (tlbEntry->lpf == lpf) {
     bx_hostpageaddr_t hostPageAddr = tlbEntry->hostPageAddr;
     Bit32u pageOffset = PAGE_OFFSET(laddr);
     Bit64u *hostAddr = (Bit64u*) (hostPageAddr | pageOffset);
     ReadHostQWordFromLittleEndian(hostAddr, data);
     BX_NOTIFY_LIN_MEMORY_ACCESS(laddr, (tlbEntry->ppf | pageOffset), 8, 0, BX_READ, (Bit8u*) &data);
+     //BX_DEBUG(("system_read_qword - pageOffset %x, hostAddr %llx ", pageOffset, hostAddr));
     return data;
   }
 

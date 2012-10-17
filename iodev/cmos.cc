@@ -357,8 +357,8 @@ void bx_cmos_c::CRA_change(void)
     // values 0001b and 0010b are the same as 1000b and 1001b
     if (nibble <= 2)
       nibble += 7;
-    BX_CMOS_THIS s.periodic_interval_usec = (unsigned) (1000000.0L /
-      (32768.0L / (1 << (nibble - 1))));
+    BX_CMOS_THIS s.periodic_interval_usec = (unsigned) (1000000.0 /
+      (32768.0 / (1 << (nibble - 1))));
 
     // if Periodic Interrupt Enable bit set, activate timer
     if (BX_CMOS_THIS s.reg[REG_STAT_B] & 0x40)

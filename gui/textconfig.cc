@@ -430,12 +430,12 @@ int bx_config_interface(int menu)
         return 0;
       case BX_CI_START_SIMULATION:
         SIM->begin_simulation(bx_startup_flags.argc, bx_startup_flags.argv);
-        printf("after begin_simulation - shouldn't happen ;)\n");
         // we don't expect it to return, but if it does, quit
 #if 0
-EMSCRIPTEN
+//EMSCRIPTEN
         return(0);
 #else
+        printf("after begin_simulation - shouldn't happen ;)\n");
         SIM->quit_sim(1);
 #endif
         break;

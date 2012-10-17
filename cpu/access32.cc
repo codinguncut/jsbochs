@@ -565,6 +565,7 @@ accessOK:
       Bit32u lpf = LPFOf(laddr);
 #endif    
       bx_TLB_entry *tlbEntry = &BX_CPU_THIS_PTR TLB.entry[tlbIndex];
+      //BX_DEBUG(("read_virtual_dword - s %d, offset %x, laddr %x, tlbIndex %d, lpf %x, tlbEntry->lpf %x", s, offset, laddr, tlbIndex, lpf, tlbEntry->lpf));
       if (tlbEntry->lpf == lpf) {
         // See if the TLB entry privilege level allows us read access
         // from this CPL.
@@ -573,7 +574,15 @@ accessOK:
           Bit32u pageOffset = PAGE_OFFSET(laddr);
           Bit32u *hostAddr = (Bit32u*) (hostPageAddr | pageOffset);
           ReadHostDWordFromLittleEndian(hostAddr, data);
+          /*
+          Bit8u vals[4];
+          for (int i = 0; i < 4; i++) {
+            vals[i] = ((Bit8u*)hostAddr)[i];
+          }
+          */
+          //BX_DEBUG(("vals: %x %x %x %x", vals[0], vals[1], vals[2], vals[3])); 
           BX_NOTIFY_LIN_MEMORY_ACCESS(laddr, (tlbEntry->ppf | pageOffset), 4, CPL, BX_READ, (Bit8u*) &data);
+          //BX_DEBUG(("read_virtual_dword (lpf == lpf) pageOffset %x, hostAddr %x, data %x, hostPageAddr %p", pageOffset, hostAddr, data, hostPageAddr));
           return data;
         }
       }
@@ -588,6 +597,7 @@ accessOK:
 #endif
 
       access_read_linear(laddr, 4, CPL, BX_READ, (void *) &data);
+      //BX_DEBUG(("access_read_linear"));
       return data;
     }
     else {

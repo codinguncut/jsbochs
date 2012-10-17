@@ -798,11 +798,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGDT_Ms(bxInstruction_c *i)
 
   Bit16u limit_16 = read_virtual_word_32(i->seg(), eaddr);
   Bit32u base_32 = read_virtual_dword_32(i->seg(), (eaddr + 2) & i->asize_mask());
+  //BX_DEBUG(("read_virtual_dword_32 - seg %d, eaddr %x, asize_mask %x", i->seg(), eaddr, i->asize_mask()));
 
   if (i->os32L() == 0) base_32 &= 0x00ffffff; /* ignore upper 8 bits */
 
   BX_CPU_THIS_PTR gdtr.limit = limit_16;
   BX_CPU_THIS_PTR gdtr.base = base_32;
+  //BX_DEBUG(("LGDT_Ms - gdtr.base = %x", BX_CPU_THIS_PTR gdtr.base));
 
   BX_NEXT_INSTR(i);
 }

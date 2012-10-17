@@ -512,23 +512,23 @@ BX_CPP_INLINE Bit64u bx_bswap64(Bit64u val64)
 
 #ifdef BX_LITTLE_ENDIAN
 #define WriteHostWordToLittleEndian(hostPtr,  nativeVar16) \
-    memcpy((hostPtr), &(nativeVar16), sizeof(Bit16u))
+    memcpy((void*)(hostPtr), (void*)&(nativeVar16), sizeof(Bit16u))
     //*((Bit16u*)(hostPtr)) = (nativeVar16)
 #define WriteHostDWordToLittleEndian(hostPtr, nativeVar32) \
-    memcpy((hostPtr), &(nativeVar32), sizeof(Bit32u))
+    memcpy((void*)(hostPtr), (void*)&(nativeVar32), sizeof(Bit32u))
     //*((Bit32u*)(hostPtr)) = (nativeVar32)
 #define WriteHostQWordToLittleEndian(hostPtr, nativeVar64) \
-    memcpy((hostPtr), &(nativeVar64), sizeof(Bit64u))
+    memcpy((void*)(hostPtr), (void*)&(nativeVar64), sizeof(Bit64u))
     //*((Bit64u*)(hostPtr)) = (nativeVar64)
 
 #define ReadHostWordFromLittleEndian(hostPtr,  nativeVar16) \
-    memcpy(&(nativeVar16), (hostPtr), sizeof(Bit16u))
+    memcpy((void*)&(nativeVar16), (void*)(hostPtr), sizeof(Bit16u))
     //(nativeVar16) = *((Bit16u*)(hostPtr))
 #define ReadHostDWordFromLittleEndian(hostPtr, nativeVar32) \
-    memcpy(&(nativeVar32), (hostPtr), sizeof(Bit32u))
+    memcpy((void*)&(nativeVar32), (void*)(hostPtr), sizeof(Bit32u))
     //(nativeVar32) = *((Bit32u*)(hostPtr))
 #define ReadHostQWordFromLittleEndian(hostPtr, nativeVar64) \
-    memcpy(&(nativeVar64), (hostPtr), sizeof(Bit64u))
+    memcpy((void*)&(nativeVar64), (void*)(hostPtr), sizeof(Bit64u))
     //(nativeVar64) = *((Bit64u*)(hostPtr))
 
 #else
