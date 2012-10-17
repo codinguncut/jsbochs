@@ -25,13 +25,16 @@ This git repo is currently my work bench and a bastadization of the original boc
 ### Building
 
 <pre>
-emconfigure ./configure --disable-plugins --disable-x86-64 --enable-cpu-level=4 --with-term  --disable-large-ramfile --disable-cdrom --disable-debugger-gui --disable-readline --disable-iodebug --disable-show-ips --enable-logging --disable-idle-hack --disable-debugger --disable-disasm
+emconfigure ./configure --disable-plugins --disable-x86-64 \
+--enable-cpu-level=4 --with-term  --disable-large-ramfile --disable-cdrom \
+--disable-debugger-gui --disable-readline --disable-iodebug --disable-show-ips \
+--enable-logging --disable-idle-hack --disable-debugger --disable-disasm
 
 emmake make
 
 emcc -O1 bochs.bc -o bochs.js
 
-node bochs.js
+node launch.js
 </pre>
 
 ## TODO
