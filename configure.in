@@ -87,9 +87,9 @@ case "$target" in
     ;;
 esac
 if test "${ADD_FLAGS:+set}" = set; then
-      CFLAGS="$CFLAGS $ADD_FLAGS"
-      CXXFLAGS="$CXXFLAGS $ADD_FLAGS"
-      CPPFLAGS="$CPPFLAGS $ADD_FLAGS"
+      CFLAGS="$CFLAGS -g $ADD_FLAGS"
+      CXXFLAGS="$CXXFLAGS -g $ADD_FLAGS"
+      CPPFLAGS="$CPPFLAGS -g $ADD_FLAGS"
 fi
 
 AC_MSG_CHECKING(for standard CFLAGS on this platform)
@@ -1993,8 +1993,8 @@ OFP="-o "
 MAKELIB="ar rv \$@"
 RMCOMMAND="rm -f "
 # first define link variables without libtool
-LINK="\$(CXX) -o \$@ \$(CXXFLAGS) \$(LDFLAGS)"
-LINK_CONSOLE="\$(CXX) -o \$@ \$(CXXFLAGS_CONSOLE) \$(LDFLAGS)"
+LINK="\$(CXX) -g -o \$@ \$(CXXFLAGS) \$(LDFLAGS)"
+LINK_CONSOLE="\$(CXX) -g -o \$@ \$(CXXFLAGS_CONSOLE) \$(LDFLAGS)"
 # unless NO_LT is set, add libtool to the front of the link command
 if test "$NO_LT" != 1; then
   LINK="\$(LIBTOOL) --mode=link --tag CXX $LINK"

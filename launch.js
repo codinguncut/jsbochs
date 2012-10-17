@@ -10,7 +10,7 @@ var Module = {
   'arguments': ["-q"],
   'preInit': function() {
     FS.init(null, output, null);
-  }
+  },
   'preRun': function() {
     FS.createDataFile('/', 'bochsrc',  nodeFS.readFileSync('bochsrc'), true, true);
     FS.createDataFile('/', 'hal91.img',    nodeFS.readFileSync('hal91.img'), true, true);

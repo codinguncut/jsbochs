@@ -530,7 +530,6 @@ BX_CPP_INLINE Bit64u bx_bswap64(Bit64u val64)
 #define ReadHostQWordFromLittleEndian(hostPtr, nativeVar64) \
     memcpy((void*)&(nativeVar64), (void*)(hostPtr), sizeof(Bit64u))
     //(nativeVar64) = *((Bit64u*)(hostPtr))
-
 #else
 /*
 #define WriteHostWordToLittleEndian(hostPtr,  nativeVar16) {  \

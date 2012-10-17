@@ -151,7 +151,9 @@ void BX_CPU_C::cpu_loop(void)
 
     // clear stop trace magic indication that probably was set by repeat or branch32/64
     BX_CPU_THIS_PTR async_event &= ~BX_ASYNC_EVENT_STOP_TRACE;
-
+#if 0    
+    break;
+#endif
   }  // while (1)
 }
 

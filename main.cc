@@ -1051,7 +1051,7 @@ int bx_begin_simulation (int argc, char *argv[])
      // printf("before the main loop\n");
 #if 0
 //EMSCRIPTEN
-      emscripten_set_main_loop(theLoop, 1000, false);
+      emscripten_set_main_loop(theLoop, 1000, true);
       return(0);
 #else
       while (1) {

@@ -53,7 +53,6 @@ OBJS = \
 	ctrl_xfer32.o \
 	ctrl_xfer16.o \
 	mmx.o \
-	3dnow.o \
 	fpu_emu.o \
 	sse.o \
 	sse_move.o \
@@ -61,14 +60,12 @@ OBJS = \
 	sse_rcp.o \
 	sse_string.o \
 	xsave.o \
-	aes.o \
 	svm.o \
 	vmx.o \
 	vmcs.o \
 	vmexit.o \
 	vmfunc.o \
 	soft_int.o \
-	apic.o \
 	bcd.o \
 	mult16.o \
 	tasking.o \
@@ -114,7 +111,10 @@ OBJS = \
 	bmi32.o \
 	string.o \
 	paging.o \
-	rdrand.o
+	rdrand.o \
+	#3dnow.o \
+	aes.o \
+	apic.o \
 	
 # Objects which are only used for x86-64 code
 OBJS64 = \
