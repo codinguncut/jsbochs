@@ -1454,6 +1454,8 @@ int bx_atexit(void)
 }
 
 #if BX_SHOW_IPS
+#if EMSCRIPTEN
+#else
 void bx_show_ips_handler(void)
 {
   static Bit64u ticks_count = 0;
@@ -1473,6 +1475,7 @@ void bx_show_ips_handler(void)
   }
   return;
 }
+#endif
 #endif
 
 void CDECL bx_signal_handler(int signum)

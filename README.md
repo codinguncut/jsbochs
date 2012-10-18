@@ -8,9 +8,10 @@ Inspired by Fabrice Bellard's fantastic [jslinux](http://bellard.org/jslinux).
 
 ## Status
 
-I have managed to get the code barely running under javascript.
+The code runs flawlessly under javascript.
+The only issue is that it runs at 1MIPS instead of native 30MIPS.
 
-The speed is horrendously slow and I have almost no output options yet, but it is generally running.
+Also, I have almost no output options yet.
 
 This git repo is currently my work bench and a bastadization of the original bochs code. I have removed all files that were not absolutely necessary for compilation in order to get my bearings.
 
@@ -25,10 +26,10 @@ This git repo is currently my work bench and a bastadization of the original boc
 ### Building
 
 <pre>
-emconfigure ./configure --disable-plugins --disable-x86-64 \
---enable-cpu-level=4 --with-term  --disable-large-ramfile --disable-cdrom \
---disable-debugger-gui --disable-readline --disable-iodebug --disable-show-ips \
---enable-logging --disable-idle-hack --disable-debugger --disable-disasm
+emconfigure ./configure --disable-plugins --disable-x86-64 --enable-cpu-level=4 \
+--with-term  --disable-large-ramfile --disable-cdrom --disable-debugger-gui \
+--disable-readline --disable-iodebug --enable-show-ips --enable-logging \
+--disable-idle-hack --disable-debugger --disable-disasm --enable-fpu
 
 emmake make
 
@@ -55,7 +56,7 @@ node launch.js
 ### Open Issues
 
 * Browser main loop
-* Compile with -O2 (bit arithmetic errors)
+* Compile with closure (bit arithmetic errors)
 * Speed
 
 ## License

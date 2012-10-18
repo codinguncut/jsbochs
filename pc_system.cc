@@ -25,6 +25,10 @@
 #include "iodev/iodev.h"
 #define LOG_THIS bx_pc_system.
 
+#if EMSCRIPTEN
+#include <time.h>
+#endif
+
 #ifdef WIN32
 #ifndef __MINGW32__
 // #include <winsock2.h> // +++
@@ -336,6 +340,25 @@ void bx_pc_system_c::countdownEvent(void)
   Bit64u   minTimeToFire;
   bx_bool  triggered[BX_MAX_TIMERS];
 
+
+#if BX_SHOW_IPS
+#if EMSCRIPTEN // emscripten does not display IPS because of lacking "select" support ;(
+  static Bit64u lastTicks = time_ticks();
+  static clock_t lastTime = clock() / (CLOCKS_PER_SEC / 1000);
+
+  Bit64u ticks = time_ticks();
+  if (ticks >= lastTicks + 1000000)
+  {
+    // amount of system ticks passed from last time the handler was called
+    clock_t nowTime = clock() / (CLOCKS_PER_SEC / 1000);
+    clock_t deltaTime = nowTime - lastTime;
+    Bit64u ips_count = ticks - lastTicks;
+    printf("ips: %fM\n", (double)ips_count / (double)deltaTime / 1000);
+    lastTime = nowTime;
+    lastTicks = ticks;
+  }
+#endif
+#endif
 
   // The countdown decremented to 0.  We need to service all the active
   // timers, and invoke callbacks from those timers which have fired.
