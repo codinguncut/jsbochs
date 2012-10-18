@@ -615,7 +615,7 @@ void bx_term_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
         //if ((new_text[1] & 0x08) > 0) ch |= A_BOLD;
         //if ((new_text[1] & 0x80) > 0) ch |= A_BLINK;
         mvaddch(y, x, ch);
-        BX_DEBUG(("output %c", (char) ch));
+        //BX_DEBUG(("output %c", (char) ch));
       }
       x++;
       new_text+=2;
