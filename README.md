@@ -9,7 +9,8 @@ Inspired by Fabrice Bellard's fantastic [jslinux](http://bellard.org/jslinux).
 ## Status
 
 The code runs flawlessly under javascript.
-The only issue is that it runs at 1MIPS instead of native 30MIPS.
+The only issue is that it runs SLOOOOW.
+It runs the BIOS code reasonably fast, but then goes down to 0.04MIPS instead of native 30MIPS.
 
 Also, I have almost no output options yet.
 
@@ -24,6 +25,10 @@ This git repo is currently my work bench and a bastadization of the original boc
 * possibly [node](http://nodejs.org/)
 
 ### Building
+
+Simply run the `build_it.sh` script which will configure and build the bochs.js file. 
+
+Alternatively follow the steps below:
 
 <pre>
 emconfigure ./configure --disable-plugins --disable-x86-64 --enable-cpu-level=4 \

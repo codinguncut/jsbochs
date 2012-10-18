@@ -9,10 +9,12 @@ For comparison, bochs compiled with gcc runs at ca. 33MIPS on my computer
 -O2 --closure 0 1.0M
 </pre>
 
-Compiling with closure does not work at the moment because of some bit-twiddling overflow code.
+Compiling with "--closure 1" does not work at the moment because of some bit-twiddling overflow code.
 
+## configure options effects with -O1
 <pre>
-Read/Write -O1
-  manual Read/WriteHost: 1.0M
-  memcpy Read/WriteHost: 1.0M
+--enable-repeat-speedups    -0.0M
+--enable-handlers-chaining  -0.1M
+--disable-alignment-check   -0.1M
+--disable-a20-pin           -0.15M
 </pre>
