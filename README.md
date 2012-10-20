@@ -16,6 +16,12 @@ Also, I have almost no output options yet.
 
 This git repo is currently my work bench and a bastadization of the original bochs code. I have removed all files that were not absolutely necessary for compilation in order to get my bearings.
 
+### Suggestions for Performance
+
+* `-s PRECISE_I64_MATH=0` will likely not work. I am very concerned that doubles > 2^32 may not be monotonic when adding 1.
+* `-s INLINING_LIMIT=0` compiles very slowly. But I will try to get it compiled (>1h)
+* replace 64bit ints with 32bit. Not sure what to replace the instruction counter with since 32bit counter will overflow in (2^32instructions/30,000,000instructions/s/60s =) 2.5 minutes. I will try a clock divider since I don't need instruction-precise timers anyway.
+
 ## Install
 
 ### Requirements
